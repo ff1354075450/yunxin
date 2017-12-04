@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--namespace 为接口-->
+<mapper namespace="com.ff.dao.StudentDao">
+    <!--目的：提供接口方法的sql语句配置-->
+    <select id="getStudent" resultType="Student">
+#         如果有内部类，可以使用类名加属性来获取值，如果是一个完整的对象，则可以写*
+        select
+            sd.sid,
+            sd.sname,
+            sd.sage "sage",
+            sd.ssex "ssex",
+            sd.create_time "create_time"
+        FROM student AS sd
+        where sd.sid = #{sid}
+    </select>
+
+    <!--<update id=""/>-->
+
+    <!--<delete id=""/>-->
+
+    <!--<insert id=""/>-->
+
+    <select id="queryAll" resultType="Student">
+#         具体的sql
+        SELECT * FROM student
+        ORDER BY sid DESC
+        LIMIT #{OFFSET },#{limit}
+    </select>
+
+</mapper>
