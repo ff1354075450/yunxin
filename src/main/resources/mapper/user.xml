@@ -3,16 +3,16 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!--namespace 为接口-->
-<mapper namespace="com.ff.dao.StudentDao">
+<mapper namespace="com.yunxin.dao.UserDAO">
     <!--目的：提供接口方法的sql语句配置-->
     <select id="getStudent" resultType="Student">
-#         如果有内部类，可以使用类名加属性来获取值，如果是一个完整的对象，则可以写*
+        #         如果有内部类，可以使用类名加属性来获取值，如果是一个完整的对象，则可以写*
         select
-            sd.sid,
-            sd.sname,
-            sd.sage "sage",
-            sd.ssex "ssex",
-            sd.create_time "create_time"
+        sd.sid,
+        sd.sname,
+        sd.sage "sage",
+        sd.ssex "ssex",
+        sd.create_time "create_time"
         FROM student AS sd
         where sd.sid = #{sid}
     </select>
@@ -21,13 +21,17 @@
 
     <!--<delete id=""/>-->
 
-    <!--<insert id=""/>-->
-
     <select id="queryAll" resultType="Student">
-#         具体的sql
+        #         具体的sql
         SELECT * FROM student
         ORDER BY sid DESC
         LIMIT #{OFFSET },#{limit}
     </select>
+
+
+    <insert id="register" parameterType="com.yunxin.entity.User" useGeneratedKeys="true" keyProperty="account">
+        INSERT INTO user(password,nick,icon,token,gtm_modified)
+        VALUES (#{password},#{nick},#{icon},#{token},#{gtmModeified})
+    </insert>
 
 </mapper>
