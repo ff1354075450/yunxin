@@ -1,18 +1,81 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
-logback配置，使得self4j可以使用
--->
-<configuration debug="true">
-
+<configuration scan="true" scanPeriod="60 seconds">
+    <!--项目名称-->
+    <contextName>yunxin</contextName>
+    <!--属性-->
+    <property name="USET_HOME" value="E:/log"/>
+    <timestamp key="bysecond" dataPattern="yyyyMMdd" timeReference="contextBirth"/>
+    <!--
+        输出到控制台
+        ch.qos.logback.core.ConsoleAppender 表示console
+    -->
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
-        <!-- encoders are  by default assigned the type
-             ch.qos.logback.classic.encoder.PatternLayoutEncoder -->
+        <!-- 过滤器，一个appender可以有多个 -->
+        <!-- 阈值过滤，就是log行为级别过滤，debug及debug以上的信息会被打印出来 -->
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>debug</level>
+        </filter>
         <encoder>
+            <!--<pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>-->
+            <!--<pattern>%d %contextName %msg%n</pattern>-->
+            <!-- pattern模式 %d时间 %thread 线程名 %level行为级别 %logger logger名称 %method 方法名称 %message 调用方法的入参消息 -->
             <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
         </encoder>
     </appender>
 
-    <root level="debug">
+
+    <!-- 滚动日志文件，这个比较常用
+    当project等于true的时候file就不会起效果
+    rollingPolicy 按天新建log日志
+        fileNamePattern 日志名称
+        maxHistory 日志保留天数
+        timeBasedFileNamingAndTriggeringPolicy 基于大小和时间，这个可以有，可以没有
+            maxFileSize 当一个日志大小大于10KB，则换一个新的日志。日志名的%i从0开始，自动递增
+    -->
+    <appender name="ROLLINGFILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!-- -->
+        <prudent>true</prudent>
+        <!--<file>${USER_HOME}/logFile.log</file>-->
+        <!--  -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${USER_HOME}/logFile.%d{yyyy-MM-dd}_%i.log</fileNamePattern>
+            <maxHistory>30</maxHistory>
+            <!-- 基于大小和时间，这个可以有，可以没有 -->
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>100MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+
+        <encoder>
+            <!-- %ex就是指抛出的异常，full是显示全部，如果在{}中写入数字，则表示展示多少行 -->
+            <pattern>%-4date [%thread] %-5level %logger{35} - %msg%n%ex{full, DISPLAY_EX_EVAL}</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="dblogger" class="ch.qos.logback.classic.db.DBAppender">
+
+    </appender>
+
+    <!-- 重点来了，上边都是appender输出源。这里开始就是looger了 -->
+    <!-- name意思是这个logger管的哪一片，
+    像下面这个管的就是log/test包下的所有文件 level是只展示什么行为信息级别以上的，
+    类似阈值过滤器 additivity表示是否再抛出事件，就是说如果有一个logger的name是log，如果这个属性是true，
+    另一个logger就会在这个logger处理完后接着继续处理
+     -->
+    <logger name="com.dotwin" level="debug" additivity="false">
+        <!-- 连接输出源，也就是上边那几个输出源 ，你可以随便选几个appender-->
+        <appender-ref ref="STDOUT"/>
+        <appender-ref ref="ROLLINGFILE"/>
+    </logger>
+    <!-- 这个logger详细到了类 -->
+    <logger name="com.dotwin.service" level="debug" additivity="false">
+        <appender-ref ref="STDOUT"/>
+        <appender-ref ref="ROLLINGFILE"/>
+    </logger>
+
+    <!-- 这就是上边logger没有管到的情况下 root默认接管所有logger -->
+    <root level="info">
         <appender-ref ref="STDOUT" />
+        <appender-ref ref="ROLLINGFILE" />
     </root>
 </configuration>
