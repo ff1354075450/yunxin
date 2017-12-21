@@ -5,23 +5,19 @@
 <!--namespace 为接口-->
 <mapper namespace="com.yunxin.dao.UserDAO">
     <!--目的：提供接口方法的sql语句配置-->
-    <select id="getStudent" resultType="Student">
+    <select id="getPassword" resultType="User">
         #         如果有内部类，可以使用类名加属性来获取值，如果是一个完整的对象，则可以写*
         select
-        sd.sid,
-        sd.sname,
-        sd.sage "sage",
-        sd.ssex "ssex",
-        sd.create_time "create_time"
-        FROM student AS sd
-        where sd.sid = #{sid}
+            *
+        FROM user
+        where account = #{account}
     </select>
 
     <!--<update id=""/>-->
 
     <!--<delete id=""/>-->
 
-    <select id="queryAll" resultType="Student">
+    <select id="queryAll" resultType="User">
         #         具体的sql
         SELECT * FROM student
         ORDER BY sid DESC

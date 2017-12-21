@@ -176,6 +176,12 @@
             <artifactId>commons-codec</artifactId>
             <version>1.9</version>
         </dependency>
+        <!--okhttp3-->
+        <dependency>
+            <groupId>com.squareup.okhttp3</groupId>
+            <artifactId>okhttp-apache</artifactId>
+            <version>3.8.0</version>
+        </dependency>
     </dependencies>
 
     <build>

@@ -1,5 +1,6 @@
 package com.yunxin.dao;
 
+import com.yunxin.entity.User;
 import org.apache.ibatis.annotations.Param;
 
 /**
@@ -7,7 +8,7 @@ import org.apache.ibatis.annotations.Param;
  */
 public interface UserDAO {
 
-    public String getPassword(@Param("account")long account);
+    public User getPassword(@Param("account")long account);
 
     public Long register(@Param("account")long account,
                             @Param("nick")String nick,

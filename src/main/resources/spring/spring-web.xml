@@ -34,5 +34,6 @@
     </bean>
 
     <!-- 4:扫描web相关的bean -->
-    <context:component-scan base-package="com.ff.web"/>
+    <context:component-scan base-package="com.yunxin.web"/>
+    <context:component-scan base-package="com.yunxin.api"/>
 </beans>

@@ -1,6 +1,5 @@
 package com.yunxin.exception;
 
-import com.ff.enums.StudentEnum;
 
 /**
  * spring 只接收运行期异常
@@ -9,10 +8,6 @@ public class DemoException extends RuntimeException {
     public DemoException() {
     }
 
-    public DemoException(StudentEnum studentEnum) {
-       int state = studentEnum.getState();
-       String stateInfo = studentEnum.getStateInfo();
-    }
 
     public DemoException(String message, Throwable cause) {
         super(message, cause);

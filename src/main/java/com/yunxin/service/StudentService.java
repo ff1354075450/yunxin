@@ -1,8 +1,7 @@
 package com.yunxin.service;
 
 
-import com.ff.dto.Exposer;
-import com.ff.entity.Student;
+
 
 import java.util.List;
 
@@ -12,13 +11,5 @@ import java.util.List;
  *
  */
 public interface StudentService {
-    List<Student> getStudent();
 
-    Student getByid(long sid);
-
-    /**
-     * 数据同学姓名
-     * @param sid
-     */
-    Exposer exportName(long sid);
 }
