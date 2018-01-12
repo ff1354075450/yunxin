@@ -3,12 +3,13 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:aop="http://www.springframework.org/schema/aop"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
        http://www.springframework.org/schema/beans/spring-beans.xsd
        http://www.springframework.org/schema/context
        http://www.springframework.org/schema/context/spring-context.xsd
        http://www.springframework.org/schema/mvc
-       http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+       http://www.springframework.org/schema/mvc/spring-mvc.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
 <!-- 配置springMvc -->
     <!-- 1:开启springMvc注解模式 -->
     <!-- 简化配置：
@@ -18,33 +19,6 @@
         xml,json默认读写支持。
         -->
     <mvc:annotation-driven/>
-
-    <!--spring mvc 注解驱动-->
-    <mvc:annotation-driven>
-        <mvc:message-converters register-defaults="true">
-            <bean class="org.springframework.http.converter.StringHttpMessageConverter">
-                <property name="supportedMediaTypes" value="text/html;charset=UTF-8"/>
-            </bean>
-            <!-- 配置Fastjson支持 -->
-            <bean class="com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter" p:charset="UTF-8">
-                <property name="supportedMediaTypes">
-                    <list>
-                        <value>application/json</value>
-                        <value>text/html;charset=UTF-8</value>
-                    </list>
-                </property>
-                <property name="features">
-                    <list>
-                        <value>WriteMapNullValue</value>
-                        <value>QuoteFieldNames</value>
-                        <value>WriteDateUseDateFormat</value>
-                        <value>WriteEnumUsingToString</value>
-                    </list>
-                </property>
-            </bean>
-        </mvc:message-converters>
-    </mvc:annotation-driven>
-
     <!-- servlet-mapping 映射的路径：“/” -->
     <!-- 静态资源配置，默认servlet配置
         1：加入对静态资源的处理；js,css,图片
@@ -52,6 +26,16 @@
      -->
     <mvc:default-servlet-handler/>
 
+    <context:component-scan base-package="com.yunxin" use-default-filters="false">
+        <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+        <context:include-filter type="annotation" expression="org.springframework.web.bind.annotation.ControllerAdvice"/>
+    </context:component-scan>
+
+    <!-- AOP式方法级权限检查 使用注解方式检查权限 -->
+    <aop:config proxy-target-class="true"></aop:config>
+    <bean class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
+        <property name="securityManager" ref="securityManager"/>
+    </bean>
 
     <!--拦截器-->
     <mvc:interceptors>
@@ -64,6 +48,7 @@
     </mvc:interceptors>
 
 
+
     <!-- 2:配置jsp，显示viewResolver -->
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <property name="viewClass" value="org.springframework.web.servlet.view.JstlView"></property>
@@ -74,4 +59,13 @@
     <!-- 4:扫描web相关的bean -->
     <context:component-scan base-package="com.yunxin.web"/>
     <context:component-scan base-package="com.yunxin.api"/>
+    <context:component-scan base-package="com.yunxin.auth"/>
+    <!--系统启动-->
+    <context:component-scan base-package="com.yunxin.init"/>
+
+    <!-- 控制器异常处理 -->
+    <bean id="exceptionHandlerExceptionResolver" class="org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver">
+    </bean>
+    <bean class="com.yunxin.exception.DefaultExceptionHandler"/>
+
 </beans>

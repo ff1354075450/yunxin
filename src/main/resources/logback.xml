@@ -52,9 +52,9 @@
         </encoder>
     </appender>
 
-    <appender name="dblogger" class="ch.qos.logback.classic.db.DBAppender">
+    <!--<appender name="dblogger" class="ch.qos.logback.classic.db.DBAppender">-->
 
-    </appender>
+    <!--</appender>-->
 
     <!-- 重点来了，上边都是appender输出源。这里开始就是looger了 -->
     <!-- name意思是这个logger管的哪一片，
@@ -62,13 +62,13 @@
     类似阈值过滤器 additivity表示是否再抛出事件，就是说如果有一个logger的name是log，如果这个属性是true，
     另一个logger就会在这个logger处理完后接着继续处理
      -->
-    <logger name="com.dotwin" level="debug" additivity="false">
+    <logger name="com.yunxin" level="debug" additivity="false">
         <!-- 连接输出源，也就是上边那几个输出源 ，你可以随便选几个appender-->
         <appender-ref ref="STDOUT"/>
         <appender-ref ref="ROLLINGFILE"/>
     </logger>
     <!-- 这个logger详细到了类 -->
-    <logger name="com.dotwin.service" level="debug" additivity="false">
+    <logger name="com.yunxin.service" level="debug" additivity="false">
         <appender-ref ref="STDOUT"/>
         <appender-ref ref="ROLLINGFILE"/>
     </logger>

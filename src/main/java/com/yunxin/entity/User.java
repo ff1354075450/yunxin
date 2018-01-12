@@ -12,24 +12,45 @@ import java.sql.Timestamp;
  */
 public class User {
 
-    private Long account;
+    /**
+     * 用户id
+     */
+    private Long id;
 
+    /**
+     * 用户名
+     */
+    private String username;
+
+    /**
+     * 用户密码
+     */
     private String password;
 
-    private String nick;
+    /**
+     * 盐值
+     */
+    private String salt;
 
-    private String icon;
+    /**
+     * 是否被锁，0是未被锁，1：被锁
+     */
+    private Integer locked;
 
-    private Timestamp gtmCreate;
-
-    private Timestamp gtmModeified;
-
-    public Long getAccount() {
-        return account;
+    public Long getId() {
+        return id;
     }
 
-    public void setAccount(Long account) {
-        this.account = account;
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getPassword() {
@@ -40,68 +61,47 @@ public class User {
         this.password = password;
     }
 
-    /**
-     * 为了方便sql存储特殊字符，需要编码和转码
-     * @return
-     */
-    public String getNick() {
-        //转码，
-        String temp = nick;
-        BASE64Decoder base64Decoder = new BASE64Decoder();
-        try {
-            byte[] bytes = base64Decoder.decodeBuffer(temp);
-            nick = new String(bytes,"utf-8");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return nick;
+    public String getSalt() {
+        return salt;
     }
 
-    public void setNick(String nick) {
-        //编码
-        BASE64Encoder base64Encoder = new BASE64Encoder();
-        String nic = nick;
-        try {
-            nic = base64Encoder.encode(nick.getBytes("utf-8"));
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-        this.nick = nic;
+    public void setSalt(String salt) {
+        this.salt = salt;
     }
 
-    public String getIcon() {
-        return icon;
+    public Integer getLocked() {
+        return locked;
     }
 
-    public void setIcon(String icon) {
-        this.icon = icon;
-    }
-
-    public Timestamp getGtmCreate() {
-        return gtmCreate;
-    }
-
-    public void setGtmCreate(Timestamp gtmCreate) {
-        this.gtmCreate = gtmCreate;
-    }
-
-    public Timestamp getGtmModeified() {
-        return gtmModeified;
-    }
-
-    public void setGtmModeified(Timestamp gtmModeified) {
-        this.gtmModeified = gtmModeified;
+    public void setLocked(Integer locked) {
+        this.locked = locked;
     }
 
     @Override
     public String toString() {
         return "User{" +
-                "account=" + account +
+                "id=" + id +
+                ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
-                ", nick='" + nick + '\'' +
-                ", icon='" + icon + '\'' +
-                ", gtmCreate=" + gtmCreate +
-                ", gtmModeified=" + gtmModeified +
+                ", salt='" + salt + '\'' +
+                ", locked=" + locked +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        User user = (User) o;
+
+        if (id != null ? !id.equals(user.id) : user.id != null) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return id != null ? id.hashCode() : 0;
     }
 }
