@@ -102,7 +102,7 @@ public class OkhttpUtil {
         String imgUrl = "Y:\\web_upload\\1496395806529.jpg";//图片原地址
         System.out.println(get("http://wwww.baidu.com"));
 //            String imgUrl =  img;//图片原地址
-//        String imageHost = Config.IMG_UPLOAD_HOST_PATH+Config.IMG_UPLOAD_INTERFACE;
+//        String imageHost = MyConfig.IMG_UPLOAD_HOST_PATH+MyConfig.IMG_UPLOAD_INTERFACE;
 //        String str = okHttpUpload("file",imgUrl,imageHost,"jpg");
 //        System.out.println(str);
     }

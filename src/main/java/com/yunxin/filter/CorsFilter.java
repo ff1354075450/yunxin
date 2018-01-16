@@ -1,5 +1,7 @@
 package com.yunxin.filter;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.*;
@@ -14,6 +16,8 @@ import java.io.IOException;
 
 @Component
 public class CorsFilter implements Filter {
+    private Logger logger = LoggerFactory.getLogger(this.getClass().getName());
+
     public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain) throws IOException, ServletException {
         String hm = ((HttpServletRequest) req).getMethod();
         HttpServletResponse response = (HttpServletResponse) res;

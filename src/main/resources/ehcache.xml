@@ -1,6 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ehcache name="shirocache">
 
+    <!--
+        name：缓存名称
+        maxElementsInMemory:内存中欲奴的存储的最大元素个数，0代表无限个
+        clearOnFlush:内存数量最大时是否清除
+        eternal:设置缓存对象是否为永久的，如果是，设置超时将被忽略，对象不过期
+        timeToIdleSeconds:设置对象在失效钱的允许闲置时间(单位秒)，默认值0，闲置时间无穷大
+        timeToLiceSeconds:缓存数据生存时间，0表示可以停顿无穷长
+        overflowToDisk:内存不足时，是否启用磁盘缓存
+        maxEntriesLocalDisk：当内存中对象数量达到maxElementsInMemory时，Ehcache将会对象写到磁盘中。
+        maxElementsOnDisk：硬盘最大缓存个数。
+        iskSpoolBufferSizeMB：这个参数设置DiskStore（磁盘缓存）的缓存区大小。默认是30MB。每个Cache都应该有自己的一个缓冲区。
+        diskPersistent：是否在VM重启时存储硬盘的缓存数据。默认值是false。
+        diskExpiryThreadIntervalSeconds：磁盘失效线程运行时间间隔，默认是120秒。
+        maxEntriesLocalHeap:堆内存中最大缓存对象数，0没有限制
+        statistics：动态改变数据
+    -->
+
+
+    <!--磁盘缓存位置-->
     <diskStore path="java.io.tmpdir"/>
 
     <!-- 登录记录缓存 锁定10分钟 -->
@@ -37,6 +56,22 @@
            timeToIdleSeconds="3600"
            timeToLiveSeconds="0"
            overflowToDisk="false"
+           statistics="true">
+    </cache>
+
+    <cache name="shiro-kickout-session"
+           maxEntriesLocalHeap="2000"
+           eternal="false"
+           timeToIdleSeconds="3600"
+           timeToLiveSeconds="0"
+           overflowToDisk="false"
+           statistics="true">
+    </cache>
+
+    <cache name="unread_msgs"
+           maxEntriesLocalHeap="2000"
+           eternal="true"
+           overflowToDisk="true"
            statistics="true">
     </cache>
 

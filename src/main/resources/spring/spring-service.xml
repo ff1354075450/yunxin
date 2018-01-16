@@ -3,18 +3,22 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:tx="http://www.springframework.org/schema/tx" xmlns:task="http://www.springframework.org/schema/task"
+       xmlns:websocket="http://www.springframework.org/schema/websocket"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
-       http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task.xsd">
+       http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task.xsd http://www.springframework.org/schema/websocket http://www.springframework.org/schema/websocket/spring-websocket.xsd">
 
 
     <!-- 扫描service包下所有使用注解的类型（包括子包） -->
     <context:component-scan base-package="com.yunxin.service"/>
+    <!-- 扫描websocket包下的配置文件,websocket -->
+    <context:component-scan base-package="com.yunxin.websocket"/>
     <!--注册任务-->
     <context:component-scan base-package="com.yunxin.task"/>
     <task:annotation-driven scheduler="myScheduler"/>
     <task:scheduler id="myScheduler" pool-size="5"/>
     <!--注册dao-->
     <!--<context:component-scan base-package="com.yunxin.dao"/>-->
+
 
     <!-- 配置事务管理器  mybatis使用是jdbc的事务管理器，hibinity使用的是自己的事务管理器-->
     <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
@@ -27,4 +31,6 @@
         默认使用注解来管理事务行为
     -->
     <tx:annotation-driven transaction-manager="transactionManager"/>
+
+
 </beans>

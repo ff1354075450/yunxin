@@ -1,12 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+       xmlns:cache="http://www.springframework.org/schema/cache"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache.xsd">
 
-    <!-- 缓存管理器 使用Ehcache实现 -->
+    <!-- 缓存管理器 使用Ehcache实现
+        分布式系统中建议使用shiro
+     -->
     <bean id="cacheManager" class="org.apache.shiro.cache.ehcache.EhCacheManager">
         <property name="cacheManagerConfigFile" value="classpath:ehcache.xml"/>
     </bean>
+
 
     <!-- 凭证匹配器 实现密码验证服务 -->
     <bean id="credentialsMatcher" class="com.yunxin.auth.RetryLimitHashedCredentialsMatcher">
@@ -50,7 +54,9 @@
         <property name="cookie" ref="rememberMeCookie"/>
     </bean>
 
-    <!-- 会话DAO -->
+    <!-- 会话DAO
+        使用Ehcache 进行回话存储，Ehcache可以配合terracotta 实现容器无关的分布式集群
+    -->
     <bean id="sessionDAO" class="org.apache.shiro.session.mgt.eis.EnterpriseCacheSessionDAO">
         <property name="activeSessionsCacheName" value="shiro-activeSessionCache"/>
         <property name="sessionIdGenerator" ref="sessionIdGenerator"/>
@@ -70,7 +76,7 @@
         <property name="sessionValidationSchedulerEnabled" value="true"/>
         <property name="sessionValidationScheduler" ref="sessionValidationScheduler"/>
         <property name="sessionDAO" ref="sessionDAO"/>
-        <!-- session 会话监听器-->
+        <!-- session 会话监听器 继承接口 SessionListener -->
         <!--<property name="sessionListeners" value="com.yunxin.listeners"/>-->
         <property name="sessionIdCookieEnabled" value="true"/>
         <property name="sessionIdCookie" ref="sessionIdCookie"/>
@@ -98,6 +104,15 @@
         <property name="loginUrl" value="/login.jsp"/>
     </bean>
 
+    <bean id="kickoutSessionControlFilter" class="com.yunxin.filter.KickoutFilter">
+        <property name="cacheManager" ref="cacheManager"/>
+        <property name="sessionManager" ref="sessionManager"/>
+        <property name="kickoutAfter" value="false"/>
+        <property name="maxSession" value="2"/>
+        <property name="kickoutUrl" value="/login?kickout=1"/>
+    </bean>
+
+
     <!-- Shiro的Web过滤器 ,提供默认过滤器，用于过滤权限url -->
     <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
         <property name="securityManager" ref="securityManager"/>
@@ -109,6 +124,8 @@
             <util:map>
                 <!--自定义 身份认证filter,其他几个过滤器是默认的-->
                 <entry key="authc" value-ref="formAuthenticationFilter"/>
+                <!--自定义，用于限制并发登录-->
+                <entry key="kickout" value-ref="kickoutSessionControlFilter"/>
             </util:map>
         </property>
         <property name="filterChainDefinitions">
@@ -122,13 +139,12 @@
                 perms["user:create"]拦截器表示需要有“user:create”权限才能访问
                 user用户过滤器，用户身份已经验证/记住我登陆
                 -->
-                /api/auth/login = anon
-                /api/auth/test = roles[系统管理员]
+                /** = anon
                 /index.jsp = anon
                 /unauthorized.jsp = anon
                 /login.jsp = authc
                 /logout = logout
-                /** = user
+                <!--/** = user-->
             </value>
         </property>
     </bean>

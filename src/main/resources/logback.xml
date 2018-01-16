@@ -62,7 +62,7 @@
     类似阈值过滤器 additivity表示是否再抛出事件，就是说如果有一个logger的name是log，如果这个属性是true，
     另一个logger就会在这个logger处理完后接着继续处理
      -->
-    <logger name="com.yunxin" level="debug" additivity="false">
+    <logger name="com.yunxin" level="debug" additivity="true">
         <!-- 连接输出源，也就是上边那几个输出源 ，你可以随便选几个appender-->
         <appender-ref ref="STDOUT"/>
         <appender-ref ref="ROLLINGFILE"/>

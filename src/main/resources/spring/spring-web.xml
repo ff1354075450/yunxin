@@ -43,6 +43,8 @@
             <!-- 拦截所有URL中包含/user/的请求 -->
             <mvc:mapping path="/**"/>
             <mvc:exclude-mapping path="/**/fonts/*"/>
+            <!--不拦截websocket相关的请求-->
+            <mvc:exclude-mapping path="/websocket/**"/>
             <bean class="com.yunxin.api.LoginInterceptor"/>
         </mvc:interceptor>
     </mvc:interceptors>

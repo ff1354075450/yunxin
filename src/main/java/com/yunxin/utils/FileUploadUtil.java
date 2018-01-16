@@ -47,7 +47,7 @@ public class FileUploadUtil {
      * @return
      */
     private static String buildUrl(String fileName) {
-//        return Config.SERVER + Config.RESOURCE_DIR + fileName;
+//        return MyConfig.SERVER + MyConfig.RESOURCE_DIR + fileName;
         return fileName;
     }
 
@@ -71,6 +71,6 @@ public class FileUploadUtil {
      * 保存缩略图。加前缀为s_
      */
     public static void saveSpic(String fileName){
-//        SimpleImageUtils.scaleNormal(Config.UPLOAD_DIR+fileName, Config.UPLOAD_DIR+"s_"+fileName, 80, 80);
+//        SimpleImageUtils.scaleNormal(MyConfig.UPLOAD_DIR+fileName, MyConfig.UPLOAD_DIR+"s_"+fileName, 80, 80);
     }
 }

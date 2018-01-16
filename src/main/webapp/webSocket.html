@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>websocket</title>
+</head>
+<body>
+<h2>WebSocket Test</h2>
+<div id="output"></div>
+
+<script src="http://cdn.sockjs.org/sockjs-0.3.min.js"></script>
+
+<script language="javascript"type="text/javascript">
+    var  wsServer = 'ws://localhost:8080/websocket';
+    var  websocket = new WebSocket(wsServer);
+    websocket.onopen = function (evt) { onOpen(evt) };
+    websocket.onclose = function (evt) { onClose(evt) };
+    websocket.onmessage = function (evt) { onMessage(evt) };
+    websocket.onerror = function (evt) { onError(evt) };
+    function onOpen(evt) {
+        console.log("Connected to WebSocket server.");
+//        var msg = "{\"receiverId\":1,\"content\":\"我是一条消息\",\"time\":12345,\"chatRoomId\":1}";
+        websocket.send("test");
+    }
+    function onClose(evt) {
+        console.log("Disconnected");
+    }
+    function onMessage(evt) {
+        console.log('Retrieved data from server: ' + evt.data);
+    }
+    function onError(evt) {
+        console.log(evt);
+        console.log('Error occured: ' + evt.data);
+    }
+
+
+</script>
+</body>
+</html>

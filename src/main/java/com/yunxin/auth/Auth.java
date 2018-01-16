@@ -40,7 +40,6 @@ public class Auth {
         UsernamePasswordToken token = new UsernamePasswordToken(username, password);
         token.setRememberMe(true);//记住密码
         subject.login(token);
-
         session.setAttribute("xx",token);
         return JsonUtil.genSuccess();
     }
