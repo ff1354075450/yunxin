@@ -101,6 +101,7 @@
     <bean id="formAuthenticationFilter" class="org.apache.shiro.web.filter.authc.FormAuthenticationFilter">
         <property name="usernameParam" value="username"/>
         <property name="passwordParam" value="password"/>
+        <property name="rememberMeParam" value="rememberMe"/>
         <property name="loginUrl" value="/login.jsp"/>
     </bean>
 
@@ -109,21 +110,21 @@
         <property name="sessionManager" ref="sessionManager"/>
         <property name="kickoutAfter" value="false"/>
         <property name="maxSession" value="2"/>
-        <property name="kickoutUrl" value="/login?kickout=1"/>
+        <property name="kickoutUrl" value="/logout"/>
     </bean>
 
 
     <!-- Shiro的Web过滤器 ,提供默认过滤器，用于过滤权限url -->
     <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
         <property name="securityManager" ref="securityManager"/>
-        <!--未登录 挑战到登录界面，或者api-->
+        <!--未登录 转到登录界面，或者api-->
         <property name="loginUrl" value="/login.jsp"/>
         <!--认证失败页面-->
         <property name="unauthorizedUrl" value="/unauthorized.jsp"/>
         <property name="filters">
             <util:map>
                 <!--自定义 身份认证filter,其他几个过滤器是默认的-->
-                <entry key="authc" value-ref="formAuthenticationFilter"/>
+                <!--<entry key="authc" value-ref="formAuthenticationFilter"/>-->
                 <!--自定义，用于限制并发登录-->
                 <entry key="kickout" value-ref="kickoutSessionControlFilter"/>
             </util:map>

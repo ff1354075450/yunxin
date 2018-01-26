@@ -1,7 +1,11 @@
-package com.yunxin.api;
+package com.yunxin.api.wx;
 
 import com.alibaba.fastjson.JSONObject;
+import com.github.wxpay.sdk.WXPayConfig;
 import com.yunxin.utils.OkhttpUtil;
+
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -11,7 +15,7 @@ import java.util.UUID;
 /**
  * 微信配置文件
  */
-public class WxConfig {
+public class WxConfig implements WXPayConfig {
 
     public final static String APPID="wxecb77a908ac21669";
     public final static String SECRET="75e7cb4a523fe9d098b169a2251ae390";
@@ -129,5 +133,38 @@ public class WxConfig {
         return Long.toString(System.currentTimeMillis() / 1000);
     }
 
+//===============================================================微信支付相关接口==============================================
+    private byte[] certData;
+    @Override
+    public String getAppID() {
+        return APPID;
+    }
+
+    @Override
+    public String getMchID() {
+        return null;
+    }
+
+    @Override
+    public String getKey() {
+        return SECRET;
+    }
+
+    @Override
+    public InputStream getCertStream() {
+        ByteArrayInputStream certBis = new ByteArrayInputStream(this.certData);
+        return certBis;
+    }
+
+    @Override
+    public int getHttpConnectTimeoutMs() {//连接超时，单位毫秒
+        return 8000;
+    }
+
+    @Override
+    public int getHttpReadTimeoutMs() {//读取超时，单位毫秒
+        return 10000;
+    }
+//    ==============================================================微信支付相关接口结束=================================================================================
 
 }

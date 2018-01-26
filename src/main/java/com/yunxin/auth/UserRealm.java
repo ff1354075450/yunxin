@@ -34,7 +34,7 @@ public class UserRealm extends AuthorizingRealm {
 
     /**
      * 登录认证
-     * @param authenticationToken 用户登录令牌
+     * @param authenticationToken 用户登录令牌,subject.login(token)传过来的
      * @return
      * @throws AuthenticationException
      */

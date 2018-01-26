@@ -2,6 +2,7 @@ package com.yunxin.websocket;
 
 import com.yunxin.Config;
 import com.yunxin.entity.User;
+import org.apache.shiro.SecurityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Configuration;
@@ -13,6 +14,7 @@ import org.springframework.web.socket.WebSocketHandler;
 import org.springframework.web.socket.config.annotation.EnableWebSocket;
 import org.springframework.web.socket.server.support.HttpSessionHandshakeInterceptor;
 
+import javax.security.auth.Subject;
 import javax.servlet.http.HttpSession;
 import java.util.Map;
 
@@ -22,12 +24,12 @@ public class HandlshakeInterceptor extends HttpSessionHandshakeInterceptor {
     @Override
     public boolean beforeHandshake(ServerHttpRequest request, ServerHttpResponse response, WebSocketHandler wsHandler, Map<String, Object> attributes) throws Exception {
         HttpSession session = ((ServletServerHttpRequest)request).getServletRequest().getSession(true);
-        User user = (User) session.getAttribute(Config.sessionUserName);
-        if (user!=null){
-            attributes.put(Config.sessionUserName,user);
+        String username = (String) SecurityUtils.getSubject().getPrincipal();
+        if (username!=null){
+            attributes.put(Config.sessionUserName,username);
             return true;
         }else {
-            logger.error("session/user is NULL");
+            logger.error("username is NULL");
             return false;
         }
     }

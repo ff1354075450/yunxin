@@ -4,6 +4,7 @@
         "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd" >
 <generatorConfiguration>
 
+    <!-- mybatis 根据包自动生成代码 -->
     <!-- 本地数据库驱动程序jar包的全路径 -->
     <classPathEntry location=""/>
 

@@ -5,12 +5,12 @@ public class WebSocketMsg {
     /**
      * 发送人id
      */
-    private Long senderId;
+    private String  sender;
 
     /**
      * 接收人id
      */
-    private Long receiverId;
+    private String receiver;
 
     /**
      * 消息内容
@@ -35,20 +35,20 @@ public class WebSocketMsg {
         this.chatRoomId = chatRoomId;
     }
 
-    public Long getSenderId() {
-        return senderId;
+    public String getSender() {
+        return sender;
     }
 
-    public void setSenderId(Long senderId) {
-        this.senderId = senderId;
+    public void setSender(String sender) {
+        this.sender = sender;
     }
 
-    public Long getReceiverId() {
-        return receiverId;
+    public String getReceiver() {
+        return receiver;
     }
 
-    public void setReceiverId(Long receiverId) {
-        this.receiverId = receiverId;
+    public void setReceiver(String receiver) {
+        this.receiver = receiver;
     }
 
     public String getContent() {
@@ -70,8 +70,8 @@ public class WebSocketMsg {
     @Override
     public String toString() {
         return "WebSocketMsg{" +
-                "senderId=" + senderId +
-                ", receiverId=" + receiverId +
+                "sender='" + sender + '\'' +
+                ", receiver='" + receiver + '\'' +
                 ", content='" + content + '\'' +
                 ", time=" + time +
                 ", chatRoomId=" + chatRoomId +

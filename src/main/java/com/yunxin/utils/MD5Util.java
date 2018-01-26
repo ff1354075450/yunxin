@@ -2,23 +2,36 @@ package com.yunxin.utils;
 
 import sun.misc.BASE64Encoder;
 
+import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 public class MD5Util {
 
     public static String get(String key){
-        byte[] bytes = null;
+        MessageDigest md5 = null;
         try {
-            MessageDigest md5 = MessageDigest.getInstance("MD5");
-            bytes = md5.digest(key.getBytes("utf-8"));//md5加密
-        }catch (Exception e){
-            bytes = key.getBytes();
+            md5 = MessageDigest.getInstance("MD5");
+            byte[] bytes = md5.digest(key.getBytes("utf-8"));//md5加密
+            return toHex(bytes);
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
-        BASE64Encoder base64Encoder = new BASE64Encoder();
-        key = base64Encoder.encode(bytes);//base64编码
-        return key;
+        return null;
     }
+
+    private static String toHex(byte[] bytes) {
+        final char[] HEX_DIGITS = "0123456789ABCDEF".toCharArray();
+        StringBuilder ret = new StringBuilder(bytes.length * 2);
+        for (int i=0; i<bytes.length; i++) {
+            ret.append(HEX_DIGITS[(bytes[i] >> 4) & 0x0f]);
+            ret.append(HEX_DIGITS[bytes[i] & 0x0f]);
+        }
+        return ret.toString();
+    }
+
 
     public static void main(String[] args) {
         System.out.println("args"+get("xxxiefa;ldf"));
