@@ -124,7 +124,7 @@
         <property name="filters">
             <util:map>
                 <!--自定义 身份认证filter,其他几个过滤器是默认的-->
-                <!--<entry key="authc" value-ref="formAuthenticationFilter"/>-->
+                <entry key="authc" value-ref="formAuthenticationFilter"/>
                 <!--自定义，用于限制并发登录-->
                 <entry key="kickout" value-ref="kickoutSessionControlFilter"/>
             </util:map>

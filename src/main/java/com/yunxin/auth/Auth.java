@@ -1,5 +1,6 @@
 package com.yunxin.auth;
 
+import com.yunxin.Config;
 import com.yunxin.entity.User;
 import com.yunxin.service.UserService;
 import com.yunxin.utils.JsonUtil;
@@ -7,6 +8,7 @@ import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.junit.Assert;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Role;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -33,6 +35,7 @@ public class Auth {
         return user;
     }
 
+
     @ResponseBody
     @RequestMapping("/login")
     public Object login(String username, String password, HttpSession session){
@@ -40,7 +43,8 @@ public class Auth {
         UsernamePasswordToken token = new UsernamePasswordToken(username, password);
         token.setRememberMe(true);//记住密码
         subject.login(token);
-        session.setAttribute("xx",token);
+        User user = userService.findByUsername(username);
+        session.setAttribute(Config.sessionUserName,user);
         return JsonUtil.genSuccess();
     }
 

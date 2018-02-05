@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 
 @Controller
 @RequestMapping("/wechat")
-public class WcTest {
+public class WxTest {
 
     private static String access_token = null;
 

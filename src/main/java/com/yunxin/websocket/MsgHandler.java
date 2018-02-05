@@ -23,6 +23,7 @@ import java.util.concurrent.locks.ReentrantLock;
 
 @Component
 public class MsgHandler extends AbstractWebSocketHandler {
+
     private Logger logger = LoggerFactory.getLogger(this.getClass().getName());
 
     private static ConcurrentHashMap<String,WebSocketSession> userSession = new ConcurrentHashMap<String, WebSocketSession>();
@@ -48,12 +49,11 @@ public class MsgHandler extends AbstractWebSocketHandler {
         String username = (String) attributes.get(Config.sessionUserName);
         logger.info("user:"+username);
         userSession.put(username,session);
-
     }
 
     @Override
     public void handleMessage(WebSocketSession session, WebSocketMessage<?> message) throws Exception {
-        logger.debug("handlermsg:"+message.toString());
+        logger.debug("handlermsg:"+((TextMessage) message).getPayload());
         String msgStr = message.getPayload().toString();
         if(msgStr.indexOf("java.nio.HeapByteBuffer")>-1){
             return;
@@ -63,21 +63,6 @@ public class MsgHandler extends AbstractWebSocketHandler {
         msg.setSender(getUser(session));
 
 
-    }
-
-    @Override
-    protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
-        super.handleTextMessage(session, message);
-    }
-
-    @Override
-    protected void handleBinaryMessage(WebSocketSession session, BinaryMessage message) throws Exception {
-        super.handleBinaryMessage(session, message);
-    }
-
-    @Override
-    protected void handlePongMessage(WebSocketSession session, PongMessage message) throws Exception {
-        super.handlePongMessage(session, message);
     }
 
     @Override
@@ -109,6 +94,7 @@ public class MsgHandler extends AbstractWebSocketHandler {
     private void sendMsg(WebSocketMsg msg){
         String reveiver = msg.getReceiver();
         msg.setTime((int) (System.currentTimeMillis()/1000));
+
         WebSocketSession session = userSession.get(reveiver);
         TextMessage message = new TextMessage(JSON.toJSONString(msg));
         if (session != null && session.isOpen()) {

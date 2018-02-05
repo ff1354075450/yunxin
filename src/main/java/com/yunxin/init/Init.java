@@ -12,6 +12,6 @@ public class Init implements ApplicationListener<ContextRefreshedEvent> {
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
-        sysLogger.info("启动完后执行该方法");
+        sysLogger.info("项目启动完成");
     }
 }
