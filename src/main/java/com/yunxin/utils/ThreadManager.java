@@ -23,9 +23,6 @@ public class ThreadManager {
         return mThreadPoolProxy;
     }
 
-
-
-
     public static class ThreadPoolProxy{
         //线程执行者，java内部通过api实现对线程池的管理
         private ThreadPoolExecutor poolExecutor;
@@ -69,12 +66,4 @@ public class ThreadManager {
         }
     }
 
-    public static void main(String[] args) {
-        Runnable runnable = () -> {
-            int i=0;
-            System.out.println("test runable"+i);
-            System.out.println("test2 runable"+i);
-        };
-        ThreadManager.getThreadPollProxy().execute(runnable);
-    }
 }

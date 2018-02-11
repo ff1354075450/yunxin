@@ -6,6 +6,7 @@ import com.yunxin.service.UserService;
 import com.yunxin.utils.JsonUtil;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.web.servlet.ShiroHttpServletRequest;
 import org.junit.Assert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Role;
@@ -18,7 +19,7 @@ import org.apache.shiro.subject.Subject;
 import javax.servlet.http.HttpSession;
 
 @Controller
-@RequestMapping(value = "/api/auth")
+@RequestMapping(value = "/auth")
 public class Auth {
 
     @Autowired
@@ -57,7 +58,7 @@ public class Auth {
 
     @ResponseBody
     @RequestMapping("/test")
-    public Object test(HttpSession session){
+    public Object test(HttpSession session, ShiroHttpServletRequest request){
         Subject subject = SecurityUtils.getSubject();
         subject.checkRole("系统管理员");
         System.out.println("系统管理员");
